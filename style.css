@@ -1,0 +1,11 @@
+.scoreboard {
+    background-color: black;
+    display: flex;
+    justify-content: space-evenly;
+    padding: 1rem;
+}
+
+.scoreboard div {
+    background-color: yellow;
+    padding: 1rem;
+}

@@ -1,55 +1,61 @@
-let playerScore = 0;
-let computerScore = 0;
-
-// play game
 function playGame() {
 
-    for (let i = 0; i < 5; i++) {
-        playRound(getPlayerChoice, getComputerChoice)
-        console.log(`${playerScore} to ${computerScore}`)
-    }
+    let playerScoreTotal = 0; // player in-game score total
+    let computerScoreTotal = 0; // computer in-game score total
 
-    if (playerScore > computerScore) {
-        console.log("You Win!")
-    } else if (computerScore > playerScore) {
-        console.log("You lose!")
-    } else {
-        console.log("Tie!")
-    }
+    let playerScore = document.querySelector('.player-score span')
+    let computerScore = document.querySelector('.computer-score span')
+
+    window.addEventListener('click', function (e) {
+
+        const playerPick = e.target.className
+
+        const computerPick = getComputerChoice()
+
+
+        if (playerPick === computerPick) {
+            return
+        } else if (playerPick === 'rock') {
+            if (computerPick === 'paper') {
+                computerScoreTotal++
+            } else {
+                playerScoreTotal++
+            }
+        } else if (playerPick === 'paper') {
+            if (computerPick === 'scissors') {
+                computerScoreTotal++
+            } else {
+                playerScore++
+            }
+        } else if (playerPick === 'scissors') {
+            if (computerPick === 'rock') {
+                computerScoreTotal++
+            } else {
+                playerScoreTotal++
+            }
+        }
+
+        playerScore.textContent = playerScoreTotal
+        computerScore.textContent = computerScoreTotal
+
+
+        if (playerScoreTotal === 5 || computerScoreTotal === 5) {
+            if (playerScoreTotal > computerScoreTotal) {
+                announceWinner('Player')
+            } else {
+                announceWinner('Computer')
+            }
+        }
+    })
 }
 
-// play round
-function playRound(playerSelection, computerSelection) {
-    let currPlayer = playerSelection()
-    console.log(`You chose ${currPlayer}`)
-    let currComputer = computerSelection()
-    console.log(`Computer chose ${currComputer}`)
-
-    if (currPlayer === currComputer) {
-        return
-    } else if (currPlayer === 'rock') {
-        if (currComputer === 'paper') {
-            computerScore++
-        } else {
-            playerScore++
-        }
-    } else if (currPlayer === 'paper') {
-        if (currComputer === 'scissors') {
-            computerScore++
-        } else {
-            playerScore++
-        }
-    } else if (currPlayer === 'scissors') {
-        if (currComputer === 'rock') {
-            computerScore++
-        } else {
-            playerScore++
-        }
-    }
-
+const announceWinner = (winner) => {
+    const div = document.createElement('h2')
+    const body = document.querySelector('body')
+    div.textContent = `${winner} wins!`
+    body.appendChild(div)
 }
 
-// computer makes choice
 const getComputerChoice = () => {
     const rng = Math.floor(Math.random() * 3)
     switch (rng) {
@@ -62,10 +68,4 @@ const getComputerChoice = () => {
     }
 }
 
-// player makes choice
-const getPlayerChoice = () => {
-    return prompt().toLowerCase()
-}
-
-// invoke play game
-playGame()
+playGame() // start game
